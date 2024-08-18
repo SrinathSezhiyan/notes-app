@@ -18,7 +18,9 @@ const AddNote: React.FC<AddNoteType> = ({
 	const dispatch = useDispatch();
 	const [state, setState] = useState<AddNoteState>(AddNoteInitialState);
 	const formRef = useRef<HTMLFormElement>(null);
+	const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
+	// Handle change for the input fields
 	const handleChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
 		let { name, value } = e.target;
 		setState((prevState: AddNoteState) => ({
@@ -30,7 +32,7 @@ const AddNote: React.FC<AddNoteType> = ({
 		}));
 
 		if (state.expanded && e.target instanceof HTMLTextAreaElement) {
-			e.target.style.height = "auto"; // Reset the height
+			e.target.style.height = "auto"; // Reset the height of the textarea
 			e.target.style.height = `${Math.min(e.target.scrollHeight, window.innerHeight * 0.78)}px`; // Expand up to 80% of the viewport height
 		}
 	}
@@ -42,10 +44,13 @@ const AddNote: React.FC<AddNoteType> = ({
 				...prevState,
 				expanded: false
 			}));
+
+			if (textAreaRef.current) {
+				textAreaRef.current.style.height = "auto"; // Reset the height of the textarea
+			}
 		}
 	};
 
-	// Add event listener for clicks
 	useEffect(() => {
 		if (modal && note) {
 			setState((prevState: AddNoteState) => ({
@@ -54,13 +59,14 @@ const AddNote: React.FC<AddNoteType> = ({
 				expanded: modal ?? false
 			}));
 		}
-
+		// Adding event listener for clicks
 		document.addEventListener("mousedown", handleClickOutside);
 		return () => {
 			document.removeEventListener("mousedown", handleClickOutside);
 		};
 	}, []);
 
+	// Expanding the input on click
 	const handleTextAreaClick = () => {
 		setState((prevState: AddNoteState) => ({
 			...prevState,
@@ -68,6 +74,7 @@ const AddNote: React.FC<AddNoteType> = ({
 		}));
 	}
 
+	// saving the data
 	const handleSubmit = () => {
 		if (state.form.content !== '') {
 			if (modal) {
@@ -77,14 +84,23 @@ const AddNote: React.FC<AddNoteType> = ({
 			}
 			setState(AddNoteInitialState);
 			handlePopup && handlePopup();
+
+			if (textAreaRef.current) {
+				textAreaRef.current.style.height = "auto"; // Reset the height of the textarea
+			}
 		}
 	}
 
+	// On click of clear button
 	const handleClear = () => {
 		setState(AddNoteInitialState);
 		handlePopup && handlePopup();
+		if (textAreaRef.current) {
+			textAreaRef.current.style.height = "auto"; // Reset the height of the textarea
+		}
 	}
 
+	// On upload of file
 	const handleFileUpload = (file: File, field: FileFieldType) => {
 		if (file) {
 			const reader = new FileReader();
@@ -112,6 +128,7 @@ const AddNote: React.FC<AddNoteType> = ({
 				/>
 			)}
 			<InputTextAreaFieldAtom
+				inputRef={textAreaRef}
 				className={state.expanded ? 'expanded-text-area' : ''}
 				name="content"
 				handleClick={handleTextAreaClick}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { PopupType } from '../../@types/NotesTypes';
 
 const Popup: React.FC<PopupType> = ({
@@ -7,6 +7,23 @@ const Popup: React.FC<PopupType> = ({
 	content,
 	onClose
 }) => {
+	const popupRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		// Function to handle clicks outside the popup
+		const handleClickOutside = (event: MouseEvent) => {
+			if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
+				onClose();
+			}
+		};
+		if (show) {
+			document.addEventListener('mousedown', handleClickOutside);
+		}
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, [show, onClose]);
+
 	if (!show) {
 		return null;
 	}
@@ -16,7 +33,7 @@ const Popup: React.FC<PopupType> = ({
 
 	return (
 		<div className="popup-overlay">
-			<div className={`popup-content ${isComponent ? 'no-padding' : ''}`}>
+			<div ref={popupRef} className={`popup-content ${isComponent ? 'no-padding' : ''}`}>
 				{!isComponent && (
 					<div className="popup-header">
 						<h2>{title}</h2>

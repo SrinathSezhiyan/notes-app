@@ -73,7 +73,15 @@ const NotesSlice = createSlice({
 	},
 });
 
-export const { addNotes, removeNotes, pinNote, unpinNote, deleteSavedNote, deletePinnedNote, updateNote } = NotesSlice.actions;
+export const {
+	addNotes,
+	removeNotes,
+	pinNote,
+	unpinNote,
+	deleteSavedNote,
+	deletePinnedNote,
+	updateNote
+} = NotesSlice.actions;
 
 export const selectNotes = (state: RootState) => state.notes;
 

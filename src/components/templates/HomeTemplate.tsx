@@ -2,12 +2,19 @@ import React from "react";
 import AddNote from "../organisms/AddNote";
 import ViewNotes from "../organisms/ViewNotes";
 import { useDispatch, useSelector } from "react-redux";
-import { deletePinnedNote, deleteSavedNote, pinNote, selectNotes, unpinNote } from "../../features/notes/NoteSlice";
+import {
+	deletePinnedNote,
+	deleteSavedNote,
+	pinNote,
+	selectNotes,
+	unpinNote
+} from "../../features/notes/NoteSlice";
 
 const HomeTemplate: React.FC = () => {
 	const notes = useSelector(selectNotes);
 	const dispatch = useDispatch();
 
+	// Handling on click of pin icon
 	const handlePinOrUnPin = (id: string | undefined, type: string) => {
 		if (id) {
 			if (type == 'pinned') {
@@ -18,6 +25,7 @@ const HomeTemplate: React.FC = () => {
 		}
 	}
 
+	// Handling on click of delete
 	const handleDelete = (id: string | undefined, type: string) => {
 		if (id) {
 			if (type == 'pinned') {

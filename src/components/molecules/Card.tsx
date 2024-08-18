@@ -18,7 +18,7 @@ const Card: React.FC<CardsType> = ({
 	const contentRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
-		// Check if the content exceeds the maximum height
+		// Checking if the content exceeds the maximum height
 		if (contentRef?.current?.scrollHeight && contentRef?.current?.scrollHeight > 120) {
 			setIsOverflowing(true);
 		}

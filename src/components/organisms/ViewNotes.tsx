@@ -38,7 +38,7 @@ const ViewNotes: React.FC<ViewNotesType> = ({
 						handlePopup={() => setPopupNote(undefined)}
 					/>
 				}
-				onClose={() => { }}
+				onClose={() => setPopupNote(undefined)}
 			/>
 		</div>
 	);

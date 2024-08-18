@@ -32,7 +32,7 @@ export interface PopupType {
   show: boolean;
   title?: string;
   content: ReactNode;
-  onClose?: () => void;
+  onClose: () => void;
 }
 
 export interface AddNoteType {
